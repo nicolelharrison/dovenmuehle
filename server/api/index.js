@@ -8,7 +8,7 @@ router.get('/strings', (req, res) => {
 
 router.post('/string', (req, res) => {
   Strings.add(req.body.string);
-  res.sendStatus(200);
+  res.sendStatus(204);
 });
 
 module.exports = router;

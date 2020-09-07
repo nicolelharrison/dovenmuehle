@@ -13,7 +13,7 @@ function Header() {
         <Img src={Banner} alt="react-boilerplate - Logo" />
       </A>
       <NavBar>
-        <HeaderLink to="/">Enter String</HeaderLink>
+        <HeaderLink to="/">Add String</HeaderLink>
         <HeaderLink to="/strings">View Strings</HeaderLink>
       </NavBar>
     </div>

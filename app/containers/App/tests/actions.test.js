@@ -1,43 +1,45 @@
-import { LOAD_REPOS, LOAD_REPOS_SUCCESS, LOAD_REPOS_ERROR } from '../constants';
+import {
+  GET_STRINGS,
+  GET_STRINGS_SUCCESS,
+  GET_STRINGS_ERROR,
+} from '../constants';
 
-import { loadRepos, reposLoaded, repoLoadingError } from '../actions';
+import { getStrings, getStringsSucceeded, getStringsFailed } from '../actions';
 
 describe('App Actions', () => {
-  describe('loadRepos', () => {
+  describe('getStrings', () => {
     it('should return the correct type', () => {
       const expectedResult = {
-        type: LOAD_REPOS,
+        type: GET_STRINGS,
       };
 
-      expect(loadRepos()).toEqual(expectedResult);
+      expect(getStrings()).toEqual(expectedResult);
     });
   });
 
-  describe('reposLoaded', () => {
-    it('should return the correct type and the passed repos', () => {
+  describe('getStringsSucceeded', () => {
+    it('should return the correct type and the passed strings', () => {
       const fixture = ['Test'];
-      const username = 'test';
       const expectedResult = {
-        type: LOAD_REPOS_SUCCESS,
-        repos: fixture,
-        username,
+        type: GET_STRINGS_SUCCESS,
+        strings: fixture,
       };
 
-      expect(reposLoaded(fixture, username)).toEqual(expectedResult);
+      expect(getStringsSucceeded(fixture)).toEqual(expectedResult);
     });
   });
 
-  describe('repoLoadingError', () => {
+  describe('getStringsFailed', () => {
     it('should return the correct type and the error', () => {
       const fixture = {
         msg: 'Something went wrong!',
       };
       const expectedResult = {
-        type: LOAD_REPOS_ERROR,
+        type: GET_STRINGS_ERROR,
         error: fixture,
       };
 
-      expect(repoLoadingError(fixture)).toEqual(expectedResult);
+      expect(getStringsFailed(fixture)).toEqual(expectedResult);
     });
   });
 });

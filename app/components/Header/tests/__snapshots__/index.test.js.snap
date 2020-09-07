@@ -19,17 +19,13 @@ exports[`<Header /> should render a div 1`] = `
       class="HeaderLink-sc-1mtyaiv-0 hMiTYG"
       href="/"
     >
-      <span>
-        Home
-      </span>
+      Add String
     </a>
     <a
       class="HeaderLink-sc-1mtyaiv-0 hMiTYG"
-      href="/features"
+      href="/strings"
     >
-      <span>
-        Features
-      </span>
+      View Strings
     </a>
   </div>
 </div>

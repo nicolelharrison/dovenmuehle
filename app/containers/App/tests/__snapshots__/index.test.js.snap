@@ -22,14 +22,13 @@ exports[`<App /> should render and match the snapshot 1`] = `
     />
     <Route
       component={[Function]}
-      path="/features"
+      path="/strings"
     />
     <Route
       component={[Function]}
       path=""
     />
   </Switch>
-  <Footer />
   <GlobalStyleComponent />
 </ForwardRef>
 `;

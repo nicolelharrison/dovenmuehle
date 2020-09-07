@@ -13,6 +13,7 @@ const ngrok =
     : false;
 const { resolve } = require('path');
 const app = express();
+app.use(express.json()); // for parsing application/json
 const api = require('./api/index.js');
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here

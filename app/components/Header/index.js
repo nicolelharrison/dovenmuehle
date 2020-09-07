@@ -14,7 +14,7 @@ function Header() {
       </A>
       <NavBar>
         <HeaderLink to="/">Enter String</HeaderLink>
-        <HeaderLink to="/features">View Strings</HeaderLink>
+        <HeaderLink to="/strings">View Strings</HeaderLink>
       </NavBar>
     </div>
   );

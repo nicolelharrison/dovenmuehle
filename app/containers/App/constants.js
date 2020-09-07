@@ -9,6 +9,10 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
-export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
-export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
+export const GET_STRINGS = 'boilerplate/App/GET_STRINGS';
+export const GET_STRINGS_SUCCESS = 'boilerplate/App/GET_STRINGS_SUCCESS';
+export const GET_STRINGS_ERROR = 'boilerplate/App/GET_STRINGS_ERROR';
+
+export const POST_STRING = 'boilerplate/App/POST_STRING';
+export const POST_STRING_SUCCESS = 'boilerplate/App/POST_STRING_SUCCESS';
+export const POST_STRING_ERROR = 'boilerplate/App/POST_STRING_ERROR';

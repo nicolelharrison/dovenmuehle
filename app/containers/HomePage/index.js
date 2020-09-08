@@ -4,57 +4,44 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React, { useEffect, memo } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import {
-  makeSelectRepos,
-  makeSelectLoading,
-  makeSelectError,
-} from 'containers/App/selectors';
 import H2 from 'components/H2';
-import ReposList from 'components/ReposList';
-import AtPrefix from './AtPrefix';
+
+import Button from 'components/Button/StyledButton';
+import Error from 'components/Error';
+import LoadingIndicator from 'components/LoadingIndicator';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
 import Input from './Input';
-import Section from './Section';
-import messages from './messages';
-import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
+import { makeSelectLoading, makeSelectError } from '../App/selectors';
+import { postString } from '../App/actions';
+import reducer from '../App/reducer';
+import saga from '../App/saga';
 
 const key = 'home';
 
-export function HomePage({
-  username,
-  loading,
-  error,
-  repos,
-  onSubmitForm,
-  onChangeUsername,
-}) {
+export function HomePage(props) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
-  useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
-    if (username && username.trim().length > 0) onSubmitForm();
-  }, []);
+  const [string, setString] = useState('');
 
-  const reposListProps = {
-    loading,
-    error,
-    repos,
+  const onChangeString = event => {
+    setString(event.target.value);
+  };
+
+  const onSubmitForm = event => {
+    if (event !== undefined && event.preventDefault) event.preventDefault();
+    props.postString(string);
+    setString('');
   };
 
   return (
@@ -68,34 +55,27 @@ export function HomePage({
       </Helmet>
       <div>
         <CenteredSection>
-          <H2>
-            <FormattedMessage {...messages.startProjectHeader} />
-          </H2>
-          <p>
-            <FormattedMessage {...messages.startProjectMessage} />
-          </p>
+          <H2>Add your favorite string</H2>
         </CenteredSection>
-        <Section>
-          <H2>
-            <FormattedMessage {...messages.trymeHeader} />
-          </H2>
+        <CenteredSection>
           <Form onSubmit={onSubmitForm}>
-            <label htmlFor="username">
-              <FormattedMessage {...messages.trymeMessage} />
-              <AtPrefix>
-                <FormattedMessage {...messages.trymeAtPrefix} />
-              </AtPrefix>
+            <label htmlFor="string">
+              String:
               <Input
-                id="username"
+                id="string"
                 type="text"
-                placeholder="mxstbr"
-                value={username}
-                onChange={onChangeUsername}
+                value={string}
+                onChange={onChangeString}
               />
+              <br />
+              <Button primary disabled={props.loading}>
+                Add
+              </Button>
             </label>
           </Form>
-          <ReposList {...reposListProps} />
-        </Section>
+          {props.loading && <LoadingIndicator />}
+          {props.error && <Error message={props.error.message} />}
+        </CenteredSection>
       </div>
     </article>
   );
@@ -104,25 +84,18 @@ export function HomePage({
 HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
+  postString: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
-    onSubmitForm: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
+    postString: string => {
+      dispatch(postString(string));
     },
   };
 }

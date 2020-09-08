@@ -3,17 +3,31 @@
  *
  * List all the features
  */
-import React from 'react';
+import React, { useEffect, memo } from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { v4 as uuidv4 } from 'uuid';
 
 import H1 from 'components/H1';
-import messages from './messages';
+import LoadingIndicator from 'components/LoadingIndicator';
+import Error from 'components/Error';
 import List from './List';
 import ListItem from './ListItem';
-import ListItemTitle from './ListItemTitle';
+import {
+  makeSelectStrings,
+  makeSelectLoading,
+  makeSelectError,
+} from '../App/selectors';
+import { getStrings } from '../App/actions';
 
-export default function FeaturePage() {
+export function FeaturePage(props) {
+  useEffect(() => {
+    props.getStrings();
+  }, []);
+
   return (
     <div>
       <Helmet>
@@ -23,55 +37,48 @@ export default function FeaturePage() {
           content="Feature page of React.js Boilerplate application"
         />
       </Helmet>
-      <H1>
-        <FormattedMessage {...messages.header} />
-      </H1>
-      <List>
-        <ListItem>
-          <ListItemTitle>
-            <FormattedMessage {...messages.scaffoldingHeader} />
-          </ListItemTitle>
-          <p>
-            <FormattedMessage {...messages.scaffoldingMessage} />
-          </p>
-        </ListItem>
+      <H1>Stored strings</H1>
 
-        <ListItem>
-          <ListItemTitle>
-            <FormattedMessage {...messages.feedbackHeader} />
-          </ListItemTitle>
-          <p>
-            <FormattedMessage {...messages.feedbackMessage} />
-          </p>
-        </ListItem>
-
-        <ListItem>
-          <ListItemTitle>
-            <FormattedMessage {...messages.routingHeader} />
-          </ListItemTitle>
-          <p>
-            <FormattedMessage {...messages.routingMessage} />
-          </p>
-        </ListItem>
-
-        <ListItem>
-          <ListItemTitle>
-            <FormattedMessage {...messages.networkHeader} />
-          </ListItemTitle>
-          <p>
-            <FormattedMessage {...messages.networkMessage} />
-          </p>
-        </ListItem>
-
-        <ListItem>
-          <ListItemTitle>
-            <FormattedMessage {...messages.intlHeader} />
-          </ListItemTitle>
-          <p>
-            <FormattedMessage {...messages.intlMessage} />
-          </p>
-        </ListItem>
-      </List>
+      {props.loading && <LoadingIndicator />}
+      {props.error && <Error message={props.error.message} />}
+      {props.strings.map(string => (
+        <List key={uuidv4()}>
+          <ListItem>
+            <p>{string}</p>
+          </ListItem>
+        </List>
+      ))}
     </div>
   );
 }
+
+FeaturePage.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  getStrings: PropTypes.func,
+  strings: PropTypes.array,
+};
+
+const mapStateToProps = createStructuredSelector({
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+  strings: makeSelectStrings(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    getStrings: () => {
+      dispatch(getStrings());
+    },
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(
+  withConnect,
+  memo,
+)(FeaturePage);

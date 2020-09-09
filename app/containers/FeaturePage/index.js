@@ -18,8 +18,8 @@ import List from './List';
 import ListItem from './ListItem';
 import {
   makeSelectStrings,
-  makeSelectLoading,
-  makeSelectError,
+  makeSelectGettingStrings,
+  makeSelectGetStringsFailed,
 } from '../App/selectors';
 import { getStrings } from '../App/actions';
 
@@ -60,8 +60,8 @@ FeaturePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  loading: makeSelectGettingStrings(),
+  error: makeSelectGetStringsFailed(),
   strings: makeSelectStrings(),
 });
 

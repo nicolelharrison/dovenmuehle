@@ -19,8 +19,14 @@ import {
 
 // The initial state of the App
 export const initialState = {
-  loading: false,
-  error: false,
+  loading: {
+    postingString: false,
+    gettingStrings: false,
+  },
+  error: {
+    postStringFailed: false,
+    getStringsFailed: false,
+  },
   strings: [],
 };
 
@@ -29,33 +35,33 @@ const appReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case GET_STRINGS:
-        draft.loading = true;
-        draft.error = false;
+        draft.loading.gettingStrings = true;
+        draft.error.getStringsFailed = false;
         draft.strings = [];
         break;
 
       case GET_STRINGS_SUCCESS:
         draft.strings = action.strings;
-        draft.loading = false;
+        draft.loading.gettingStrings = false;
         break;
 
       case GET_STRINGS_ERROR:
-        draft.error = action.error;
-        draft.loading = false;
+        draft.error.getStringsFailed = action.error;
+        draft.loading.gettingStrings = false;
         break;
 
       case POST_STRING:
-        draft.loading = true;
-        draft.error = false;
+        draft.loading.postingString = true;
+        draft.error.postStringFailed = false;
         break;
 
       case POST_STRING_SUCCESS:
-        draft.loading = false;
+        draft.loading.postingString = false;
         break;
 
       case POST_STRING_ERROR:
-        draft.error = action.error;
-        draft.loading = false;
+        draft.error.postStringFailed = action.error;
+        draft.loading.postingString = false;
         break;
     }
   });

@@ -9,16 +9,28 @@ const selectGlobal = state => state.global || initialState;
 
 const selectRouter = state => state.router;
 
-const makeSelectLoading = () =>
+const makeSelectGettingStrings = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.loading,
+    globalState => globalState.loading.gettingStrings,
   );
 
-const makeSelectError = () =>
+const makeSelectPostingString = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.error,
+    globalState => globalState.loading.postingString,
+  );
+
+const makeSelectGetStringsFailed = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.error.getStringsFailed,
+  );
+
+const makeSelectPostStringFailed = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.error.postStringFailed,
   );
 
 const makeSelectStrings = () =>
@@ -35,8 +47,10 @@ const makeSelectLocation = () =>
 
 export {
   selectGlobal,
-  makeSelectLoading,
-  makeSelectError,
+  makeSelectGettingStrings,
+  makeSelectGetStringsFailed,
+  makeSelectPostingString,
+  makeSelectPostStringFailed,
   makeSelectStrings,
   makeSelectLocation,
 };

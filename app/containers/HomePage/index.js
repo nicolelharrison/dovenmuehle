@@ -21,7 +21,10 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import CenteredSection from './CenteredSection';
 import Form from './Form';
 import Input from './Input';
-import { makeSelectLoading, makeSelectError } from '../App/selectors';
+import {
+  makeSelectPostingString,
+  makeSelectPostStringFailed,
+} from '../App/selectors';
 import { postString } from '../App/actions';
 import reducer from '../App/reducer';
 import saga from '../App/saga';
@@ -88,8 +91,8 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
+  loading: makeSelectPostingString(),
+  error: makeSelectPostStringFailed(),
 });
 
 export function mapDispatchToProps(dispatch) {

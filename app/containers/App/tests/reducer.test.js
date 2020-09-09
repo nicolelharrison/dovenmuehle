@@ -8,8 +8,15 @@ describe('appReducer', () => {
   let state;
   beforeEach(() => {
     state = {
-      loading: false,
-      error: false,
+      loading: {
+        postingString: false,
+        gettingStrings: false,
+      },
+      error: {
+        postStringFailed: false,
+        getStringsFailed: false,
+      },
+      postStringSucceeded: false,
       strings: [],
     };
   });
@@ -21,8 +28,14 @@ describe('appReducer', () => {
 
   it('should handle the getStrings action correctly', () => {
     const expectedResult = produce(state, draft => {
-      draft.loading = true;
-      draft.error = false;
+      draft.loading = {
+        gettingStrings: true,
+        postingString: false,
+      };
+      draft.error = {
+        getStringsFailed: false,
+        postStringFailed: false,
+      };
       draft.strings = [];
     });
 
@@ -33,7 +46,10 @@ describe('appReducer', () => {
     const fixture = ['string1', 'string2'];
     const expectedResult = produce(state, draft => {
       draft.strings = fixture;
-      draft.loading = false;
+      draft.loading = {
+        gettingStrings: false,
+        postingString: false,
+      };
     });
 
     expect(appReducer(state, getStringsSucceeded(fixture))).toEqual(
@@ -46,8 +62,14 @@ describe('appReducer', () => {
       msg: 'Not found',
     };
     const expectedResult = produce(state, draft => {
-      draft.error = fixture;
-      draft.loading = false;
+      draft.error = {
+        getStringsFailed: fixture,
+        postStringFailed: false,
+      };
+      draft.loading = {
+        gettingStrings: false,
+        postingString: false,
+      };
     });
 
     expect(appReducer(state, getStringsFailed(fixture))).toEqual(

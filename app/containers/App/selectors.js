@@ -33,6 +33,12 @@ const makeSelectPostStringFailed = () =>
     globalState => globalState.error.postStringFailed,
   );
 
+const makeSelectPostStringSucceeded = () =>
+  createSelector(
+    selectGlobal,
+    globalState => globalState.postStringSucceeded,
+  );
+
 const makeSelectStrings = () =>
   createSelector(
     selectGlobal,
@@ -51,6 +57,7 @@ export {
   makeSelectGetStringsFailed,
   makeSelectPostingString,
   makeSelectPostStringFailed,
+  makeSelectPostStringSucceeded,
   makeSelectStrings,
   makeSelectLocation,
 };

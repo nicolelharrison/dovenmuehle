@@ -24,6 +24,7 @@ import Input from './Input';
 import {
   makeSelectPostingString,
   makeSelectPostStringFailed,
+  makeSelectPostStringSucceeded,
 } from '../App/selectors';
 import { postString } from '../App/actions';
 import reducer from '../App/reducer';
@@ -76,6 +77,9 @@ export function HomePage(props) {
               </Button>
             </label>
           </Form>
+          {props.loaded && (
+            <div style={{ color: 'green' }}>String was successfully added</div>
+          )}
           {props.loading && <LoadingIndicator />}
           {props.error && <Error message={props.error.message} />}
         </CenteredSection>
@@ -86,6 +90,7 @@ export function HomePage(props) {
 
 HomePage.propTypes = {
   loading: PropTypes.bool,
+  loaded: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   postString: PropTypes.func,
 };
@@ -93,6 +98,7 @@ HomePage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   loading: makeSelectPostingString(),
   error: makeSelectPostStringFailed(),
+  loaded: makeSelectPostStringSucceeded(),
 });
 
 export function mapDispatchToProps(dispatch) {

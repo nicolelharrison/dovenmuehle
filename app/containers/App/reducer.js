@@ -27,6 +27,7 @@ export const initialState = {
     postStringFailed: false,
     getStringsFailed: false,
   },
+  postStringSucceeded: false,
   strings: [],
 };
 
@@ -53,15 +54,18 @@ const appReducer = (state = initialState, action) =>
       case POST_STRING:
         draft.loading.postingString = true;
         draft.error.postStringFailed = false;
+        draft.postStringSucceeded = false;
         break;
 
       case POST_STRING_SUCCESS:
         draft.loading.postingString = false;
+        draft.postStringSucceeded = true;
         break;
 
       case POST_STRING_ERROR:
         draft.error.postStringFailed = action.error;
         draft.loading.postingString = false;
+        draft.postStringSucceeded = false;
         break;
     }
   });
